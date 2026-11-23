@@ -2,7 +2,7 @@
 
 **Frontend engineering guidance for coding assistants.**
 
-[View the source on GitHub](https://github.com/fyndaman/watermelon-pixel)
+[View on GitHub](https://github.com/fyndaman/watermelon-pixel) · [View on npm](https://www.npmjs.com/package/watermelon-pixel)
 
 Watermelon Pixel gives your coding assistant a frontend engineering playbook and tools for inspecting the app it’s working on. The playbook covers where code belongs, how interfaces should behave, and what to check before handing off a change. The assistant applies that guidance using the app’s existing framework, components, and conventions.
 

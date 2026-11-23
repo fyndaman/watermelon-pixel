@@ -8,6 +8,8 @@ Watermelon Pixel gives your coding assistant a frontend engineering playbook and
 
 For example, ask it to **improve a settings form**. It can find the app’s existing fields and save flow, consult guidance on keyboard focus and failed saves, and propose an edit that keeps people’s input when saving fails. Your assistant writes the code and uses its own terminal or browser tools for builds, tests, and visual review.
 
+[Quick start](#quick-start) · [Worked example](#worked-example-improve-a-settings-form) · [Guidance topics](#guidance-topics) · [MCP tool reference](#mcp-tool-reference) · [Troubleshooting](#troubleshooting)
+
 ## Quick start
 
 You need **Node.js 22 or newer** and a coding assistant that supports local MCP servers over stdio. Add this entry to your assistant’s MCP settings. The settings location and configuration format depend on the host.
@@ -36,6 +38,13 @@ Replace the example path with your app’s directory, then reload the assistant 
 
 You can describe the task in everyday language. Say who uses the screen, what they need to do, and any important constraints. For a code review, ask the assistant to use the guide and report what it checked.
 
+### More prompts to try
+
+- **Build a screen.** “Add an orders page with a status filter and a usable layout on phones. Reuse our existing table and filters. Distinguish a store with no orders from a search with no matches.”
+- **Diagnose slow React UI.** “Typing in the product filter feels slow. Use the performance guidance to identify whether rendering or requests are causing the delay. Show what you measured.”
+- **Review a browser security boundary.** “Review how we render customer notes and where the sign-in flow sends people afterward. Identify which checks belong in the frontend and which need server enforcement.”
+- **Draft a commit message.** “Use the commit message guide to describe the staged settings change in our repository’s usual style.”
+
 ## What the assistant gets
 
 1. **Engineering guidance.** Load the bundled workflow with `get_component_guidance`, then retrieve the references relevant to the task with `get_design_knowledge`. A form change might use `interactions`, `data-workflows`, and `quality`.
@@ -43,14 +52,37 @@ You can describe the task in everyday language. Say who uses the screen, what th
 3. **A planning checklist.** `plan_ui_change` returns the request, project context, recommended topics, and prompts about goals, constraints, and acceptance checks. The assistant uses this information to make an implementation plan.
 4. **A file preview.** The assistant can submit its proposed code for one file and see the current and proposed contents before writing. It can then use the host’s tools to check the change.
 
+## Worked example: improve a settings form
+
+1. **Find the existing implementation.** The assistant uses `inspect_ui_system` and `find_ui_patterns` to locate the settings screen, shared field components, and existing validation patterns. It reads the relevant files to confirm how the form submits and surfaces errors.
+2. **Plan around observable behavior.** The assistant uses `plan_ui_change` to identify the relevant guidance, then reads `interactions` for field labels and focus and `data-workflows` for pending and failed saves. A proposed plan could keep the draft on failure, guard repeated submissions, and show an error the user can reach with the keyboard.
+3. **Review the proposed code.** The assistant writes the implementation and can use `create_or_update_component` to preview each file. Ask for a summary of the proposed changes before they’re applied.
+4. **Check the result.** After applying the edit, the assistant can use the host’s tools to check a successful save, a failed save followed by a retry, and keyboard use. Ask it to report the checks it actually ran.
+
 ## Guidance topics
 
-- **Start a change** · `overview` explains how to use the references. `briefs` turns an idea into a goal and acceptance checks. `architecture` covers file placement, routes, feature ownership, and shared modules.
-- **Build the interface** · `foundations` covers color, typography, spacing, responsive layouts, and motion. `components` and `interactions` cover structure, labels, keyboard behavior, and focus. `recipes` offers patterns for common screens and forms. `tokens` provides example design values to adapt to your app.
-- **Handle data and failures** · `data-workflows` covers search, pagination, stale responses, safe saves, and background job polling.
-- **Review the result** · `security` covers untrusted content, sessions, permissions, and uploads. `performance` covers Core Web Vitals, React render profiling, and choosing fixes based on measurements. `quality` covers accessibility, responsive behavior, and theme checks.
-- **Write the commit** · `commit-messages` covers clear subjects and useful bodies that follow the repository’s conventions.
-- **Maintain the guidance** · `sources` records reference notes for maintainers.
+### Plan and structure the change
+
+- `overview` explains how to use the references.
+- `briefs` turns a request into a user goal, scope, constraints, and observable acceptance checks.
+- `architecture` covers route placement, organizing by feature, and deciding when to move code into shared folders.
+
+### Build the interface
+
+- `foundations` covers semantic color, typography, spacing, responsive layouts, themes, and motion.
+- `components` covers page shells, buttons, forms, selectors, and feedback states.
+- `interactions` covers semantic controls, keyboard behavior, names and labels, and where focus goes when a dialog opens or closes.
+- `recipes` offers implementation patterns for settings, dashboards, searchable lists, onboarding, and other common screens.
+- `tokens` provides example color, sizing, and motion values in JSON. Use the app’s established tokens where available.
+
+### Handle data and review behavior
+
+- `data-workflows` covers search, pagination, stale responses, remote verification, safe saves, and background polling.
+- `security` covers untrusted content, sessions, redirects, permissions, uploads, and server enforcement.
+- `performance` covers Core Web Vitals, React render profiling, memoization, code splitting, and comparing measurements.
+- `quality` covers accessibility, responsive behavior, theme checks, and review of async states.
+- `commit-messages` covers concise subjects, useful bodies, and how to follow the repository’s commit conventions.
+- `sources` records reference notes for maintainers.
 
 The workflow and topic references are also available as read-only MCP resources in hosts that support resource browsing.
 
@@ -65,9 +97,18 @@ The workflow and topic references are also available as read-only MCP resources 
 - `plan_ui_change` gathers project context and provides prompts and a checklist for planning a UI change.
 - `create_or_update_component` previews or applies the full proposed contents of one file. Preview is the default. To write, supply `dryRun: false`. For an existing file, `expectedContent` must match its full current contents.
 
+### Preview and apply a file edit
+
+For an existing file, the assistant reads it first and passes the exact full text as `expectedContent`, with the proposed replacement as `content`. For a new file, omit `expectedContent`. The default preview returns the operation, the current content (or `null` for a new file), and the proposed content. Applying uses the same inputs with `dryRun: false`.
+
+If the existing file changes between reading and previewing or applying, the assistant must read it again and reconcile the proposed edit with the new contents. This workflow handles one file per call.
+
 ### File scope and limits
 
-Reads support `.ts`, `.tsx`, `.js`, `.jsx`, `.vue`, `.svelte`, `.css`, `.scss`, `.json`, and `.md`. Edits support the same extensions except JSON and Markdown. Files are limited to 200 KB. Pattern search covers source and styles. Project scans skip hidden paths, symlinks, and common dependency and build directories, and report when the scan is truncated. File tools operate under the configured project root.
+- **Read:** `.ts`, `.tsx`, `.js`, `.jsx`, `.vue`, `.svelte`, `.css`, `.scss`, `.json`, and `.md`. **Edit:** the same extensions except JSON and Markdown. The size limit is 200 KB per file.
+- **Paths:** file tools take paths relative to `--root`, such as `src/features/settings/SettingsForm.tsx`. They reject absolute paths, parent traversal, hidden paths, and symlinks. Scans also skip dependency and build directories such as `node_modules`, `dist`, and `.next`.
+- **Discovery:** project scans are bounded to 10 directory levels, 15,000 entries, and 3,000 eligible files. The UI inventory examines at most 600 source files and 300 stylesheets. Use a known path to read a file directly when it falls outside the scanned results.
+- **Search:** use a literal query up to 120 characters. Search covers source and styles, and returns the first matching line and surrounding text per file.
 
 ## Command line
 
@@ -78,6 +119,14 @@ npx -y watermelon-pixel@latest --root "/absolute/path/to/your/frontend-project"
 ```
 
 `--print-skill` prints the bundled workflow to stdout. `--root` starts the stdio server used by the assistant.
+
+## Troubleshooting
+
+- **The assistant can’t connect.** Check that Node.js 22 or newer and `npx` are available to the process that launches the assistant. Run `npx -y watermelon-pixel@latest --help` to check that the package starts, then confirm the host’s stdio settings and reload it.
+- **The assistant sees the wrong project.** Check the absolute directory passed to `--root`. In a monorepo, choose the app directory if its package manifest is the one you want the tools to inspect.
+- **A component or token is missing from the inventory.** Use `find_ui_patterns` or read a known file directly. The inventory uses package names and source patterns as clues and can miss project-specific naming or files outside its scan limits.
+- **A preview shows no change on disk.** Preview mode returns the proposed file contents. The assistant can apply those contents with `dryRun: false` when you want the edit written.
+- **An update is rejected because the file changed.** Read the current contents, reconcile the edit with them, and preview again using the refreshed `expectedContent`.
 
 ## Development
 

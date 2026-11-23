@@ -1,7 +1,12 @@
 {
   "name": "watermelon-pixel",
-  "version": "0.2.7",
+  "version": "0.2.8",
   "description": "Frontend engineering knowledge and a workflow skill for coding assistants building applications",
+  "homepage": "https://github.com/fyndaman/watermelon-pixel#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fyndaman/watermelon-pixel.git"
+  },
   "main": "index.js",
   "directories": {
     "test": "test"

@@ -1,0 +1,27 @@
+# Frontend performance
+
+Start with the slow route or interaction and a representative device, network, and dataset. Use a production build when profiling. Record a baseline with the browser's network and performance tools or the project's existing measurements. Separate time spent waiting for the server or downloading assets from time spent executing JavaScript, updating layout, or painting. Check real-user data when available. [Chrome DevTools performance reference](https://developer.chrome.com/docs/devtools/performance/reference)
+
+## Choose a fix that matches the bottleneck
+
+- **Slow first view:** Use Largest Contentful Paint (LCP) to investigate when the main content appears. Make the main image discoverable early and keep it out of lazy loading. Use responsive image sizes and defer below-the-fold media where appropriate. Look for sequential requests that can run in parallel and defer code for optional editors, charts, or secondary routes.
+- **Sluggish interactions:** Use Interaction to Next Paint (INP) and an interaction trace to find blocking work. Keep text input immediate while debouncing remote search. Reduce expensive work in event handlers and rendering, and split long tasks where practical. Add memoization only when profiling shows repeated work worth avoiding.
+- **Large results:** Use server pagination or incremental loading if the API supports it. Consider virtualizing rows when rendering cost is the bottleneck. Check keyboard focus, navigation, and access to results that are outside the visible window. Keep existing results visible during a refresh when they still match the current query.
+- **Content that jumps:** Use Cumulative Layout Shift (CLS) to inspect unexpected movement. Reserve dimensions for images, embeds, and data regions before they load. Size placeholders to match the final content and choose font fallbacks that reduce reflow.
+- **Too many requests or bytes:** Inspect the network waterfall and route bundle. Reuse the project's request cache, cancel stale searches, and avoid repeated fetches. Keep private responses scoped to the current session. Split large optional code at natural boundaries and confirm the split improves the initial view without adding avoidable waits later.
+
+[Web Vitals](https://web.dev/articles/vitals) · [Core Web Vitals optimization guidance](https://web.dev/articles/top-cwv)
+
+## React applications
+
+- **Find the expensive renders.** Record the slow interaction with React DevTools Profiler and inspect which subtree rendered, why it updated, and how long it took. A browser trace can show whether layout, paint, or a network wait also contributes to the delay. Use a profiling-enabled production build when comparing React render timings in production mode. [React Profiler](https://react.dev/reference/react/Profiler)
+- **Limit the reach of frequent updates.** Keep draft input, hover, and open state near the components that use them. When many context consumers update together, check whether fast-changing values can be separated from stable values. Derive values during render when appropriate so effects do not schedule an extra update to synchronize duplicate state.
+- **Memoize measured work.** Use `memo` for an expensive child that often receives the same props, `useMemo` for a costly calculation with stable dependencies, and `useCallback` when stable function identity helps an existing memoization boundary. Check whether React Compiler is enabled for the relevant code before adding manual memoization. Verify that the change saves more work than it adds. [React memo](https://react.dev/reference/react/memo)
+- **Keep typing responsive.** Update controlled input state immediately. For an expensive filtered view, pass a deferred value to the results and keep the slow subtree from repeating work while that value is unchanged. Use a transition for a nonurgent state update you control, such as switching a heavy results tab. Debounce or cancel network requests separately. [useDeferredValue](https://react.dev/reference/react/useDeferredValue) · [useTransition](https://react.dev/reference/react/useTransition)
+- **Load optional code at its point of use.** Prefer the app framework's route splitting. For a heavy optional component such as an editor, declare `lazy` at module scope and put a nearby `Suspense` fallback around it. Check loading, import failure, and the delay the first time someone opens it. [React lazy](https://react.dev/reference/react/lazy)
+
+For example, if typing into a product filter freezes a large results panel, profile typing first. If the panel render dominates, scope the input state and defer the results update. If the trace points to requests, start with the request flow. Compare the same typing interaction after the fix and check that the final results and keyboard focus are correct.
+
+## Validate the change
+
+Repeat the same route and interaction under comparable conditions, including the same dataset, viewport, throttling, and cold or warm cache state. Report the before and after metric that matches the problem, such as transferred bytes, LCP, interaction latency, or layout shift. Repeat measurements when results are noisy. A load-only Lighthouse run can measure Total Blocking Time as a lab proxy for responsiveness. Assess INP with actual interactions or field data. If measurement tools are unavailable, describe the source change and mark the expected improvement as unmeasured.

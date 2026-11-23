@@ -2,6 +2,8 @@
 
 **Frontend engineering knowledge for coding assistants.**
 
+[View the source on GitHub](https://github.com/fyndaman/watermelon-pixel)
+
 `watermelon-pixel` packages practical frontend engineering knowledge as an MCP server and a bundled skill. A coding assistant consults this guidance while building an application to make decisions about code structure, accessible interactions, responsive styling, forms, data fetching, and UI states.
 
 The assistant applies the guidance using the app's framework and conventions, then writes the implementation in the app's own codebase. Project inspection, source search, and file previews help it put the guidance into practice.
@@ -89,6 +91,7 @@ This is structured context and a checklist, not an AI-generated implementation. 
 | `recipes` | Reusable page, form, selector, and investigation recipes, including a portable React example |
 | `quality` | Accessibility, responsive and theme review, source-quality checks, and adoption boundaries |
 | `security` | Safe rendering, sessions and permissions, sensitive data, uploads, and browser trust boundaries |
+| `performance` | Core Web Vitals, React render profiling, memoization, large lists, and code splitting |
 | `sources` | Reference organization, conflicts, and maintenance notes |
 | `tokens` | Machine-readable color, layout, typography, spacing, and motion values |
 

@@ -11,6 +11,8 @@ Before adding or moving files, read `architecture` and inspect a comparable feat
 
 Read `security` when a change renders untrusted content, handles sessions or permissions, sends authenticated writes, or touches sensitive data, uploads, redirects, or embedded content. Use it to identify which controls belong in the UI and which need server enforcement.
 
+Read `performance` for slow routes, sluggish interactions, large result sets, or expensive React renders. Use the host's profiling tools when available and compare the same scenario after the change.
+
 ## Working with non-developers
 
 Accept requests in plain language; do not require users to name frameworks, files, or component APIs. Translate what the user wants to accomplish into a UI plan, then explain that plan without jargon. If an important product decision is missing, ask a short, concrete question. Otherwise make a conservative choice based on the existing project and state the assumption clearly.
@@ -57,6 +59,7 @@ For reusable design patterns, start with [Morpheus knowledge overview](reference
 - [Recipes](references/recipes.md) for concrete implementation steps and a portable React/CSS example.
 - [Quality](references/quality.md) for accessibility, responsive checks, and source shortcomings to improve.
 - [Security](references/security.md) for safe rendering, sessions, permissions, sensitive data, and browser trust boundaries.
+- [Performance](references/performance.md) for profiling, Core Web Vitals, and choosing changes for loading and responsiveness.
 - [Sources](references/sources.md) for provenance and maintenance.
 
 When connected, retrieve these references through `get_design_knowledge({"topic":"components"})` or the resource `ui://knowledge/morpheus/components`. `plan_ui_change` returns recommended topics. The pack ships with this Skill and works without the Morpheus checkout. Use its semantic roles and composition patterns to improve design while retaining the target's brand, installed components, and conventions. GenDS APIs and app aliases are specific to Morpheus; they are not dependencies supplied by this package. Follow the quality reference's improvements rather than copying the source's known keyboard, focus, or theme compatibility gaps.

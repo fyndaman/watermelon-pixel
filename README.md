@@ -59,6 +59,12 @@ You can describe the task in everyday language. Say who uses the screen, what th
 3. **Review the proposed code.** The assistant writes the implementation and can use `create_or_update_component` to preview each file. Ask for a summary of the proposed changes before they’re applied.
 4. **Check the result.** After applying the edit, the assistant can use the host’s tools to check a successful save, a failed save followed by a retry, and keyboard use. Ask it to report the checks it actually ran.
 
+## How do I know it’s working?
+
+Ask the assistant to plan a test for a settings form that keeps edits after a failed save. Ask it to use Watermelon Pixel’s `testing` and `data-workflows` topics and show the plan before editing.
+
+A useful response identifies the actual form and a nearby test in your project, then proposes a check for error feedback, preserved input, and a successful retry. If you ask it to implement the test, it should show the proposed change and report which checks it ran. If it can’t load the topics, check the MCP connection and the package version configured in your host.
+
 ## Guidance topics
 
 ### Plan and structure the change
@@ -66,21 +72,35 @@ You can describe the task in everyday language. Say who uses the screen, what th
 - `overview` explains how to use the references.
 - `briefs` turns a request into a user goal, scope, constraints, and observable acceptance checks.
 - `architecture` covers route placement, organizing by feature, and deciding when to move code into shared folders.
+- `web-platform` covers semantic HTML, browser APIs, navigation, compatibility, and offline behavior.
+- `typescript` covers state and prop modeling, runtime validation, and API contracts.
+- `react-nextjs` covers React state and fetching, Next.js router conventions, server and client boundaries, and where to put loading and error states.
 
 ### Build the interface
 
 - `foundations` covers semantic color, typography, spacing, responsive layouts, themes, and motion.
+- `css-design-systems` covers the cascade, layout, shared tokens and variants, and managing style overrides.
+- `accessibility` covers document structure, keyboard and screen reader behavior, and manual review.
 - `components` covers page shells, buttons, forms, selectors, and feedback states.
 - `interactions` covers semantic controls, keyboard behavior, names and labels, and where focus goes when a dialog opens or closes.
 - `recipes` offers implementation patterns for settings, dashboards, searchable lists, onboarding, and other common screens.
 - `tokens` provides example color, sizing, and motion values in JSON. Use the app’s established tokens where available.
+- `internationalization` covers translated copy, locale-aware dates and amounts, long labels, and right-to-left layouts.
 
 ### Handle data and review behavior
 
 - `data-workflows` covers search, pagination, stale responses, remote verification, safe saves, and background polling.
+- `state-and-network` covers state ownership, API clients, caching, retries, and optimistic updates.
 - `security` covers untrusted content, sessions, redirects, permissions, uploads, and server enforcement.
 - `performance` covers Core Web Vitals, React render profiling, memoization, code splitting, and comparing measurements.
 - `quality` covers accessibility, responsive behavior, theme checks, and review of async states.
+- `testing` covers choosing unit, component, or browser tests and checking retries, keyboard focus, and stale results.
+
+### Ship and maintain
+
+- `seo-content` covers public pages, metadata, redirects, and search discoverability.
+- `build-and-delivery` covers dependencies, environment configuration, CI, deployment, and rollback.
+- `observability` covers production diagnostics, performance signals, analytics, and privacy.
 - `commit-messages` covers concise subjects, useful bodies, and how to follow the repository’s commit conventions.
 - `sources` records reference notes for maintainers.
 

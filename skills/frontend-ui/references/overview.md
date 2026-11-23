@@ -6,6 +6,16 @@ Morpheus serves data engineers and analysts performing repeated, precise tasks: 
 
 ## Read by task
 
+- `web-platform`, `typescript`, and `css-design-systems` cover browser behavior, types and runtime boundaries, and layout and styling.
+- `accessibility` covers semantic structure, keyboard use, assistive technology, and practical review.
+- `state-and-network` covers state ownership, caching, retries, and recovery.
+- `seo-content` covers indexable routes, metadata, and structured data.
+- `build-and-delivery` and `observability` cover getting changes into production and diagnosing them afterward.
+
+- `react-nextjs` covers React state and data fetching and Next.js route and runtime decisions.
+- `internationalization` covers translated messages, locale-aware formatting, and layouts in both reading directions.
+- `testing` covers choosing and writing tests for frontend behavior.
+
 - `architecture` covers file placement, framework routes, feature ownership, and shared modules.
 
 - `foundations`: color roles, typography, spacing, responsive layout, depth, motion, and theme integration.

@@ -55,11 +55,22 @@ For reusable design patterns, start with [Morpheus knowledge overview](reference
 - [Foundations](references/foundations.md) and [tokens](references/tokens.json) for colors, light/dark themes, typography, spacing, layout, and motion.
 - [Briefs](references/briefs.md) for audience, task, content, constraints, and acceptance criteria.
 - [Architecture](references/architecture.md) for folder structure, feature ownership, and shared modules.
+- [Web platform](references/web-platform.md) for browser APIs, navigation, compatibility, storage, and offline behavior.
+- [TypeScript](references/typescript.md) for modeling props and state, runtime validation, and API contracts.
+- [CSS and design systems](references/css-design-systems.md) for the cascade, layout, styling boundaries, and shared variants.
+- [Accessibility](references/accessibility.md) for keyboard, screen reader, and visual accessibility review.
+- [State and network](references/state-and-network.md) for state ownership, caching, retries, and optimistic updates.
+- [Search discoverability](references/seo-content.md) for metadata, indexable routes, and structured data.
+- [Build and delivery](references/build-and-delivery.md) for production configuration, CI, deployment, and rollback.
+- [Observability](references/observability.md) for production metrics, diagnostic events, and privacy.
+- [React and Next.js](references/react-nextjs.md) when deciding where state or data fetching belongs in React, or where a Next.js route needs server or browser code, loading UI, or error handling.
 - [Components](references/components.md) for shared page shells, buttons, modal forms, selectors, and result states.
 - [Interactions](references/interactions.md) for component composition, keyboard behavior, focus, and accessible state contracts.
+- [Internationalization](references/internationalization.md) when adding user-facing copy or adapting a screen for multiple locales.
 - [Data workflows](references/data-workflows.md) for server state, search, pagination, remote form verification, safe saves, and polling background work.
 - [Recipes](references/recipes.md) for concrete implementation steps and a portable React/CSS example.
 - [Quality](references/quality.md) for accessibility, responsive checks, and source shortcomings to improve.
+- [Testing](references/testing.md) when writing or choosing tests for observable frontend behavior.
 - [Security](references/security.md) for safe rendering, sessions, permissions, sensitive data, and browser trust boundaries.
 - [Performance](references/performance.md) for profiling, Core Web Vitals, and choosing changes for loading and responsiveness.
 - [Commit messages](references/commit-messages.md) for clear subjects, helpful bodies, and repository conventions.

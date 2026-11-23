@@ -6,7 +6,7 @@ import { knowledgeTopics, knowledgeDescriptions, knowledgeIndex, readKnowledge, 
 const text = (value: unknown) => ({content:[{type:'text' as const,text:typeof value === 'string'?value:JSON.stringify(value,null,2)}]});
 export const guidance = () => readFile(new URL('../skills/frontend-ui/SKILL.md',import.meta.url),'utf8');
 export function createServer(project: Project) {
-  const server = new McpServer({name:'watermelon-pixel',version:'0.2.8'});
+  const server = new McpServer({name:'watermelon-pixel',version:'0.2.9'});
   const register = (name:string, description:string, inputSchema:Record<string,z.ZodType>, handler:(input:any)=>Promise<unknown>, writes=false) => server.registerTool(name,{description,inputSchema,annotations:{readOnlyHint:!writes,destructiveHint:writes,openWorldHint:false}},async (input:any) => {
     try { return text(await handler(input)); } catch(e) { return {...text({error:(e as Error).message}),isError:true}; }
   });

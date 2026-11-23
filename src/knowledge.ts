@@ -1,7 +1,7 @@
 import { readFile } from 'node:fs/promises';
 
 // The closed topic map also prevents resource/tool input from selecting arbitrary files.
-export const knowledgeTopics = ['overview', 'briefs', 'architecture', 'foundations', 'components', 'interactions', 'data-workflows', 'recipes', 'security', 'performance', 'quality', 'sources', 'tokens'] as const;
+export const knowledgeTopics = ['overview', 'briefs', 'architecture', 'foundations', 'components', 'interactions', 'data-workflows', 'recipes', 'security', 'performance', 'quality', 'commit-messages', 'sources', 'tokens'] as const;
 export type KnowledgeTopic = typeof knowledgeTopics[number];
 export const knowledgeDescriptions: Record<KnowledgeTopic, string> = {
   overview: 'Morpheus UI knowledge index, applicability, evidence, and limitations',
@@ -15,6 +15,7 @@ export const knowledgeDescriptions: Record<KnowledgeTopic, string> = {
   security: 'Safe rendering, sessions and permissions, sensitive data, uploads, and browser trust boundaries',
   performance: 'Diagnose slow loads and interactions, profile React renders, and measure improvements',
   quality: 'Accessibility, theme and responsive checks, source defects, and adoption boundaries',
+  'commit-messages': 'Repository conventions, clear Git commit subjects and bodies, and Conventional Commits examples',
   sources: 'Source paths, snapshot provenance, conflicts, and maintenance guidance',
   tokens: 'Machine-readable source colors and layout, typography, spacing, and motion constants',
 };
@@ -38,5 +39,8 @@ export function recommendKnowledge(request: string): KnowledgeTopic[] {
     topics.push('performance');
   }
   topics.push('recipes', 'quality');
+  if (/\b(?:commit(?:s|ting)?|commitlint|conventional commits)\b/i.test(request)) {
+    topics.push('commit-messages');
+  }
   return topics;
 }

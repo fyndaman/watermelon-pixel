@@ -15,6 +15,7 @@ Morpheus serves data engineers and analysts performing repeated, precise tasks: 
 - `quality`: accessibility checks, responsive verification, migration conflicts, and improvements to make instead of copying defects.
 - `security`: rendering untrusted content, handling sessions and permissions, and protecting sensitive data.
 - `performance`: diagnosing slow loading and interactions, reducing unnecessary work, and measuring improvements.
+- `commit-messages`: writing clear Git commit messages that match the repository's convention.
 - `sources`: source map and evidence classification for maintaining this pack.
 - `tokens`: machine-readable light/dark variables and measured source constants.
 
